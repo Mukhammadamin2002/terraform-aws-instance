@@ -16,33 +16,54 @@ provider "aws" {
 
 data "aws_ami" "ubuntu" {
 
-    most_recent = true
+  most_recent = true
 
-    filter {
-        name   = "name"
-        values = ["ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"]
-    }
+  filter {
+    name   = "name"
+    values = ["ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"]
+  }
 
-    filter {
-        name = "virtualization-type"
-        values = ["hvm"]
-    }
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
 
-    owners = ["099720109477"]
+  owners = ["099720109477"]
 }
 
-resource "aws_instance" "app-server" {
+resource "aws_instance" "ubuntu-server" {
   ami                    = data.aws_ami.ubuntu.id
   instance_type          = "t2.micro"
-  vpc_security_group_ids = ["${aws_security_group.SecurityGroup.id}"]
-  user_data = file("scripts/nginx.sh")
+  vpc_security_group_ids = [aws_security_group.SecurityGroup.id]
+  subnet_id              = aws_subnet.public-subnet.id
+  user_data              = file("./scripts/nginx.sh")
   tags = {
     Name = var.instance_name
   }
 }
+
+# Get latest Red Hat Enterprise Linux 8.x AMI
+data "aws_ami" "redhat-linux-8" {
+  most_recent = true
+  owners      = ["309956199498"]
+  filter {
+    name   = "name"
+    values = ["RHEL-8.*"]
+  }
+}
+resource "aws_instance" "centos-server" {
+  ami                    = data.aws_ami.redhat-linux-8.id
+  instance_type          = "t2.micro"
+  vpc_security_group_ids = [aws_security_group.SecurityGroup.id]
+  subnet_id              = aws_subnet.private-subnet.id
+  tags = {
+    Name = var.centos_name
+  }
+}
+
 resource "aws_security_group" "SecurityGroup" {
   description = "Instance Inbound traffic"
-
+  vpc_id = aws_vpc.exadel-vpc.id
   ingress {
     from_port   = 22
     to_port     = 22
@@ -75,6 +96,5 @@ resource "aws_security_group" "SecurityGroup" {
     to_port          = 0
     protocol         = "-1"
     cidr_blocks      = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]
   }
 }
