@@ -34,13 +34,13 @@ data "aws_ami" "ubuntu" {
 resource "aws_instance" "app-server" {
   ami                    = data.aws_ami.ubuntu.id
   instance_type          = "t2.micro"
-  vpc_security_group_ids = ["${aws_security_group.UbuntuGroup.id}"]
+  vpc_security_group_ids = ["${aws_security_group.SecurityGroup.id}"]
   user_data = file("scripts/nginx.sh")
   tags = {
     Name = var.instance_name
   }
 }
-resource "aws_security_group" "UbuntuGroup" {
+resource "aws_security_group" "SecurityGroup" {
   description = "Instance Inbound traffic"
 
   ingress {
@@ -69,5 +69,12 @@ resource "aws_security_group" "UbuntuGroup" {
     to_port     = -1
     protocol    = "icmp"
     cidr_blocks = ["0.0.0.0/0"]
+  }
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
   }
 }
