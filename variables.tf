@@ -16,3 +16,8 @@ variable "region" {
   default     = "eu-central-1"
 }
 
+variable "pub_key" {
+  description = "Public Key"
+  type        = string
+  sensitive   = true
+}

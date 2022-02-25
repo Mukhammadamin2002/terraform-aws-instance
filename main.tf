@@ -36,7 +36,8 @@ resource "aws_instance" "ubuntu-server" {
   instance_type          = "t2.micro"
   vpc_security_group_ids = [aws_security_group.SecurityGroup.id]
   subnet_id              = aws_subnet.public-subnet.id
-  user_data              = file("./scripts/nginx.sh")
+  user_data              = file("./scripts/setup.sh")
+  key_name = "accesser"
   tags = {
     Name = var.instance_name
   }
@@ -56,6 +57,7 @@ resource "aws_instance" "centos-server" {
   instance_type          = "t2.micro"
   vpc_security_group_ids = [aws_security_group.SecurityGroup.id]
   subnet_id              = aws_subnet.private-subnet.id
+  key_name = "accesser"
   tags = {
     Name = var.centos_name
   }
