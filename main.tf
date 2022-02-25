@@ -11,36 +11,36 @@ terraform {
 
 provider "aws" {
   profile = "default"
-  region  = "eu-central-1"
+  region  = var.region
 }
 
-# data "aws_ami" "img-ami" {
-#     most_recent = true
+data "aws_ami" "ubuntu" {
 
-#     filter {
-#         name   = "name"
-#         values = ["ubuntu-focal-20.04-amd64-server-*"]
-#     }
+    most_recent = true
 
-#     filter {
-#         name   = "virtualization-type"
-#         values = ["hvm"]
-#     }
+    filter {
+        name   = "name"
+        values = ["ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"]
+    }
 
-#     owners = ["418480801570"] # Canonical
-# }
+    filter {
+        name = "virtualization-type"
+        values = ["hvm"]
+    }
+
+    owners = ["099720109477"]
+}
 
 resource "aws_instance" "app-server" {
-  ami                    = "ami-0d527b8c289b4af7f"
+  ami                    = data.aws_ami.ubuntu.id
   instance_type          = "t2.micro"
-  vpc_security_group_ids = ["${aws_security_group.securitygroup.id}"]
+  vpc_security_group_ids = ["${aws_security_group.UbuntuGroup.id}"]
+  user_data = file("scripts/nginx.sh")
   tags = {
     Name = var.instance_name
   }
-
 }
-
-resource "aws_security_group" "securitygroup" {
+resource "aws_security_group" "UbuntuGroup" {
   description = "Instance Inbound traffic"
 
   ingress {
