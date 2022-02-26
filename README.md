@@ -19,3 +19,4 @@
 
 ### Visit following link to make sure nginx installed from rpm package in rhel-8 successfully
 #### https://exadel.s3.eu-central-1.amazonaws.com/rhel-nginx.jpg
+#### https://exadel.s3.eu-central-1.amazonaws.com/hello-world-rhel.jpg
