@@ -17,5 +17,5 @@
 ### Open Following Link to see Hello World page
 #### http://3.122.216.179/
 
-### Visit following link to make sure nginx installed from rpm package in rhel-8 successfully
+### Visit following link to make sure nginx installed from rpm package in rhel-8 (private ip is 10.0.10.7) successfully
 #### https://exadel.s3.eu-central-1.amazonaws.com/rhel-nginx.jpg
