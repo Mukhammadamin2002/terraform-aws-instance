@@ -52,14 +52,14 @@ data "aws_ami" "redhat-linux-8" {
     values = ["RHEL-8.*"]
   }
 }
-resource "aws_instance" "centos-server" {
+resource "aws_instance" "rhel-server" {
   ami                    = data.aws_ami.redhat-linux-8.id
   instance_type          = "t2.micro"
   vpc_security_group_ids = [aws_security_group.SecurityGroup.id]
   subnet_id              = aws_subnet.private-subnet.id
   key_name = "accesser"
   tags = {
-    Name = var.centos_name
+    Name = var.rhel_name
   }
 }
 

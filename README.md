@@ -15,7 +15,7 @@
 ### If we run `terraform apply` it will prompt us to enter values for that variable
 
 ### Open Following Link to see Hello World page
-#### http://3.122.216.179/
+#### http://52.59.51.17/
 
 ### Visit following link to make sure nginx installed from rpm package in rhel-8 (private ip is 10.0.10.7) successfully
 #### https://exadel.s3.eu-central-1.amazonaws.com/rhel-nginx.jpg

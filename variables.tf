@@ -4,10 +4,10 @@ variable "instance_name" {
   default     = "ubuntu-instance"
 }
 
-variable "centos_name" {
+variable "rhel_name" {
   description = "value of the name tag for the EC2 instance"
   type        = string
-  default     = "centos-instance"
+  default     = "rhel-instance"
 }
 
 variable "region" {
