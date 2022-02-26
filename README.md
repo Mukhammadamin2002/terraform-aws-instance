@@ -13,3 +13,6 @@
 `terraform apply -var-file="secret.tfvars"`
 
 ### If we run `terraform apply` it will prompt us to enter values for that variable
+
+### Open Following Link to see Hello World page
+#### http://3.122.216.179/
